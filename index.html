@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>科技感 多頁網站</title>
+  <link rel="stylesheet" href="styles.css">
+</head><body>
+<header>
+  <nav>
+    <a href="index.html">首頁</a>
+    <a href="login.html">登入</a>
+    <a href="calculator.html">計算機</a>
+    <a href="music.html">音樂</a>
+  </nav>
+</header>
+<div class="container">
+  <h1>歡迎來到科技感網站</h1>
+  <div class="carousel">
+    <img src="assets/img1.jpg" class="active">
+    <img src="assets/img2.jpg">
+    <img src="assets/img3.jpg">
+  </div>
+  <button class="text-btn" onclick="changeText()">點我改文字</button>
+  <p id="txt-target">這段文字可以被按鈕改變。</p>
+  <button onclick="showModal()">開啟彈窗</button>
+</div>
+<div id="modal" class="modal" onclick="closeModal()">
+  <div class="content" onclick="event.stopPropagation()">
+    <h2>這是彈跳視窗</h2>
+    <p>點擊外圍或下方按鈕可以關閉。</p>
+    <button onclick="closeModal()">關閉</button>
+  </div>
+</div>
+<script src="scripts.js"></script>
+</body></html>
