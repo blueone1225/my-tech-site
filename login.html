@@ -1,13 +1,23 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-TW">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>登入頁面</title><link rel="stylesheet" href="styles.css"></head><body>
-<header><nav><a href="index.html">首頁</a> | <a href="login.html">登入</a></nav></header>
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>登入 | 科技感網站</title>
+  <meta name="description" content="模擬登入頁面，支援記住我功能">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header><nav><a href="index.html">首頁</a><a href="login.html">登入 / 登出</a></nav></header>
 <div class="container">
   <h2>登入</h2>
-  <form onsubmit="alert('登入成功！'); return false;">
-    <label>帳號：<input type="text" required></label><br><br>
-    <label>密碼：<input type="password" required></label><br><br>
+  <form onsubmit="login(event)">
+    <label>帳號：<input type="text" id="user" required></label><br><br>
+    <label>密碼：<input type="password" id="pass" required></label><br><br>
+    <label><input type="checkbox" id="remember"> 記住我</label><br><br>
     <input type="submit" value="登入">
   </form>
-</div></body></html>
+</div>
+<script src="scripts.js"></script>
+</body>
+</html>

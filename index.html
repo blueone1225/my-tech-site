@@ -2,34 +2,45 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>科技感 多頁網站</title>
+  <title>首頁 | 科技感網站</title>
+  <meta name="description" content="我的科技風格多頁網站，包含輪播、modal、留言板與登入功能">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   <link rel="stylesheet" href="styles.css">
-</head><body>
+</head>
+<body>
 <header>
-  <nav>
-    <a href="index.html">首頁</a>
-    <a href="login.html">登入</a>
-    <a href="calculator.html">計算機</a>
-    <a href="music.html">音樂</a>
-  </nav>
+  <nav><a href="index.html">首頁</a><a href="login.html">登入 / 登出</a><a href="calculator.html">計算機</a><a href="music.html">音樂</a></nav>
 </header>
-<div class="container">
-  <h1>歡迎來到科技感網站</h1>
+<div class="container" data-aos="fade-up">
+  <h1 id="welcome">歡迎訪客！</h1>
   <div class="carousel">
     <img src="assets/img1.jpg" class="active">
     <img src="assets/img2.jpg">
     <img src="assets/img3.jpg">
   </div>
-  <button class="text-btn" onclick="changeText()">點我改文字</button>
+  <button class="text-btn" onclick="changeText()"><i class="fas fa-sync-alt"></i> 點我改文字</button>
   <p id="txt-target">這段文字可以被按鈕改變。</p>
-  <button onclick="showModal()">開啟彈窗</button>
-</div>
-<div id="modal" class="modal" onclick="closeModal()">
-  <div class="content" onclick="event.stopPropagation()">
-    <h2>這是彈跳視窗</h2>
-    <p>點擊外圍或下方按鈕可以關閉。</p>
-    <button onclick="closeModal()">關閉</button>
+  <button onclick="showModal()"><i class="fas fa-comment-dots"></i> 開啟彈窗</button>
+  <div id="modal" class="modal" onclick="closeModal()">
+    <div class="content" onclick="e=>e.stopPropagation()">
+      <h2>這是彈跳視窗</h2><p>點擊外圍或下方按鈕可關閉。</p>
+      <button onclick="closeModal()">關閉</button>
+    </div>
   </div>
 </div>
+<div class="container" data-aos="fade-up">
+  <h2>留言板</h2>
+  <textarea id="comment-input" rows="3" style="width:100%;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem;"></textarea>
+  <button onclick="postComment()"><i class="fas fa-paper-plane"></i> 發表留言</button>
+  <ul id="comment-list" class="comment-list"></ul>
+</div>
+<script src="https://unpkg.com/particles.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="scripts.js"></script>
-</body></html>
+<script>particlesJS.load('particles-js','particles.json',function(){console.log('粒子載入');});</script>
+<footer><p>&copy; 2025 Your Name</p></footer>
+<div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
+</body>
+</html>

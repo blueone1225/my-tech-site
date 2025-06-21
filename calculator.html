@@ -1,20 +1,41 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-TW">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>計算機</title><link rel="stylesheet" href="styles.css"></head><body>
-<header><nav><a href="index.html">首頁</a> | <a href="calculator.html">計算機</a></nav></header>
-<div class="container">
-  <h2>簡易計算器</h2>
-  <input id="num1" type="number" placeholder="數字 1">
-  <select id="op">
-    <option value="add">+</option>
-    <option value="sub">−</option>
-    <option value="mul">×</option>
-    <option value="div">÷</option>
-  </select>
-  <input id="num2" type="number" placeholder="數字 2">
-  <button onclick="calc()">計算</button>
-  <input id="result" readonly placeholder="結果">
-</div>
-<script src="scripts.js"></script>
-</body></html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>計算機 | 科技感網站</title>
+  <meta name="description" content="簡易科技風格計算機頁面，支援基本加減乘除運算" />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="stylesheet" href="styles.css" />
+
+
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">首頁</a>
+      <a href="login.html">登入 / 登出</a>
+      <a href="calculator.html">計算機</a>
+      <a href="music.html">音樂</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>計算機</h2>
+    <label>數字1：<input type="number" id="num1" /></label><br /><br />
+    <label>數字2：<input type="number" id="num2" /></label><br /><br />
+    <label>運算：
+      <select id="op">
+        <option value="add">加</option>
+        <option value="sub">減</option>
+        <option value="mul">乘</option>
+        <option value="div">除</option>
+      </select>
+    </label><br /><br />
+    <button onclick="calc()">計算</button><br /><br />
+    <label>結果：<input type="text" id="result" readonly /></label>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

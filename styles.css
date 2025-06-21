@@ -1,15 +1,22 @@
-﻿* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #121212; color: #e0e0e0; font-family: Arial, sans-serif; }
-header { background:#1f1f1f; padding:1rem; }
-nav a { color:#4dd0e1; margin:0 1rem; text-decoration:none; }
-nav a:hover { text-decoration:underline; }
-.container { max-width:800px; margin:2rem auto; padding:1rem; background:#1e1e1e; border-radius:8px; }
-button, input[type="submit"] { background:#4dd0e1; color:#121212; padding:.5rem 1rem; border:none; border-radius:4px; cursor:pointer; }
-button:hover, input[type="submit"]:hover { background:#26a69a; }
-.modal { position:fixed; top:0; left:0; width:100%; height:100%; 
-         background: rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; }
-.modal .content { background:#222; padding:2rem; border-radius:6px; }
-.carousel { position: relative; overflow:hidden; }
-.carousel img { width:100%; display:none; border-radius:6px; }
-.carousel img.active { display:block; }
-.text-btn { margin-top:1rem; }
+﻿/* 基本風格 + RWD */
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#121212;color:#e0e0e0;font-family:Arial,sans-serif;min-height:100vh;position:relative;overflow-x:hidden}
+header{background:#1f1f1f;padding:1rem;position:sticky;top:0;z-index:10}
+nav a{color:#4dd0e1;margin:0 1rem;text-decoration:none}
+nav a:hover{text-decoration:underline}
+.container{max-width:800px;margin:2rem auto;padding:1rem;background:#1e1e1e;border-radius:8px;opacity:0;transform:translateY(20px);transition:all .6s ease}
+button,input[type="submit"]{background:#4dd0e1;color:#121212;padding:.5rem 1rem;border:none;border-radius:4px;cursor:pointer}
+button:hover,input[type="submit"]:hover{background:#26a69a}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center}
+.modal .content{background:#222;padding:2rem;border-radius:6px}
+.carousel{position:relative;overflow:hidden;margin-bottom:2rem}
+.carousel img{width:100%;display:none;border-radius:6px}
+.carousel img.active{display:block}
+.text-btn{margin-top:1rem}
+.comment-list{margin-top:1rem;list-style:none;max-height:200px;overflow:auto}
+.comment-list li{background:#2a2a2a;padding:.5rem;margin-bottom:.5rem;border-radius:4px}
+footer{background:#1f1f1f;color:#888;padding:1rem;text-align:center;position:relative;margin-top:2rem}
+@media(max-width:600px){
+  .container{margin:1rem;padding:.5rem}
+  nav a{margin:0 .5rem}
+}
