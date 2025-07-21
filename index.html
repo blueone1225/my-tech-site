@@ -23,7 +23,7 @@
     }
 
     #welcome {
-      font-size: 64px;
+      font-size: 60px;
       font-weight: 900;
       text-align: center;
       margin-top: 5vh;
@@ -109,10 +109,12 @@
       text-align: center;
     }
 
-    .swiper-slide img {
-      width: 200px;
-      border-radius: 6px;
-    }
+   .swiper-slide img,
+.carousel-static img {
+  width: 280px; /* 原 200px，擴大至 280px 更符合視覺比例 */
+  max-width: 90%; /* 手機時仍能自適應 */
+}
+
 
     /* 靜態備援圖片列 */
     .carousel-static {
