@@ -1,23 +1,24 @@
-
-
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title> 首頁 | 科技  | 藍京 </title>
+  <title>首頁 | 科技 | 藍京</title>
   <meta name="description" content="我的科技風格多頁網站，包含輪播、modal、留言板與登入功能">
   <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-  <link rel="stylesheet" href="styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
-
-<style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
+  <style>
     body {
       background-color: #0d0d0d;
       color: #00fff7;
       margin: 0;
       padding: 0;
       font-family: 'Orbitron', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
     }
 
     #welcome {
@@ -31,20 +32,21 @@
         0 0 20px #00ffff,
         0 0 40px #00ffff,
         0 0 80px #00ffff;
+      max-width: 90vw;
     }
-  </style>
 
-<style>
-    body {
-      background-color: #0d0d0d;
-      color: #00fff7;
-      font-family: 'Orbitron', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
+    .carousel img {
+      max-width: 300px;
+      margin: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00fff7;
+    }
+
+    h1.system-title {
+      margin-top: 3rem;
+      font-weight: 700;
+      font-size: 36px;
+      text-align: center;
     }
 
     #txt-target {
@@ -56,6 +58,7 @@
       border-radius: 8px;
       background-color: rgba(0,0,0,0.5);
       max-width: 600px;
+      user-select: none;
     }
 
     button {
@@ -100,6 +103,7 @@
       text-align: center;
       max-width: 500px;
       box-shadow: 0 0 15px #00ffff, 0 0 30px #00fff7;
+      user-select: none;
     }
 
     .modal .content h2 {
@@ -109,30 +113,35 @@
     .modal .content button {
       background-color: #00fff7;
       color: #000;
+      cursor: pointer;
     }
   </style>
-  
 </head>
 <body>
 <header>
-  <nav><a href="index.html">首頁</a><a href="login.html"> 登入 / 離開 </a><a href="calculator.html"> 計算 </a><a href="music.html"> 個音分享 </a></nav>
+  <nav>
+    <a href="index.html">首頁</a>
+    <a href="login.html">登入 / 離開</a>
+    <a href="calculator.html">計算</a>
+    <a href="music.html">個音分享</a>
+  </nav>
 </header>
-<div class="container" data-aos="fade-up">
+
+<div class="container" data-aos="fade-up" style="text-align:center;">
   <h1 id="welcome">系統啟動：回到邊界外自由—選擇的開始。</h1>
+
   <div class="carousel">
-
-  <img src="assets/4.png">
-  <img src="assets/5.png">
-  <img src="assets/6.png">
-
-    
+    <img src="assets/4.png">
+    <img src="assets/5.png">
+    <img src="assets/6.png">
   </div>
- <h1>🧠 系統接入模擬器</h1>
+
+  <h1 class="system-title">🧠 系統接入模擬器</h1>
 
   <button onclick="changeText()">接入終端</button>
   <p id="txt-target">等待接入訊息...</p>
 
-  <!-- Modal 彈跳視窗 -->
+  <!-- Modal -->
   <div id="modal" class="modal" onclick="closeModal()">
     <div class="content" onclick="event.stopPropagation()">
       <h2>系統提示</h2>
@@ -140,63 +149,46 @@
       <button onclick="closeModal()">確認</button>
     </div>
   </div>
-
-   <!--<button class="text-btn" onclick="changeText()"><i class="fas fa-sync-alt"></i> 點點看</button>
-  <p id="txt-target"> 人機回應 </p>-->
-  <button onclick="showModal()"><i class="fas fa-comment-dots"></i> 彈窗</button>
-  <div id="modal" class="modal" onclick="closeModal()">
-    <div class="content" onclick="e=>e.stopPropagation()">
-      <h2>彈跳視窗</h2><p>好奇是起點</p><p>點擊外圍或下方按鈕可關閉。</p>
-      <button onclick="closeModal()">關閉</button>
-    </div>
-  </div>
 </div>
-<div class="container" data-aos="fade-up">
-  <h2>留言板</h2>
-  <textarea id="comment-input" rows="3" style="width:100%;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem;"></textarea>
-  <button onclick="postComment()"><i class="fas fa-paper-plane"></i> 發表留言</button>
-  <ul id="comment-list" class="comment-list"></ul>
-</div>
-  
-<script src="https://unpkg.com/particles.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<script src="scripts.js"></script>
-<script>particlesJS.load('particles-js','particles.json',function(){console.log('粒子載入');});</script>
-function changeText() {
-      const messages = [
-        { text: '資料下載中...', trigger: false },
-        { text: '你不是你', trigger: true, modalTitle: '警告：身分錯誤', modalContent: '系統偵測到記憶重疊。你的意識不屬於此實體。' },
-        { text: '訊號干擾中…', trigger: false },
-        { text: 'AI 分裂體重組完成', trigger: false },
-        { text: '訪問權限不足', trigger: false },
-        { text: '請立即前往主控制塔', trigger: true, modalTitle: '任務啟動', modalContent: '你已被選中。接下來將進入區域 D-27，請小心。' },
-        { text: '你已離線 3942 秒', trigger: false },
-        { text: '系統觀察中…', trigger: true, modalTitle: '監控提示', modalContent: '你的所有動作皆被記錄。請勿違規。' }
-      ];
 
-      const randomIndex = Math.floor(Math.random() * messages.length);
-      const selected = messages[randomIndex];
+<footer style="margin-top:auto; padding:1rem; text-align:center; font-size:0.9rem; color:#00fff7;">
+  &copy; 2025 藍京網頁設計工作室corp
+</footer>
 
-      document.getElementById('txt-target').innerText = selected.text;
+<script>
+  function changeText() {
+    const messages = [
+      { text: '資料下載中...', trigger: false },
+      { text: '你不是你', trigger: true, modalTitle: '警告：身分錯誤', modalContent: '系統偵測到記憶重疊。你的意識不屬於此實體。' },
+      { text: '訊號干擾中…', trigger: false },
+      { text: 'AI 分裂體重組完成', trigger: false },
+      { text: '訪問權限不足', trigger: false },
+      { text: '請立即前往主控制塔', trigger: true, modalTitle: '任務啟動', modalContent: '你已被選中。接下來將進入區域 D-27，請小心。' },
+      { text: '你已離線 3942 秒', trigger: false },
+      { text: '系統觀察中…', trigger: true, modalTitle: '監控提示', modalContent: '你的所有動作皆被記錄。請勿違規。' }
+    ];
 
-      if (selected.trigger) {
-        showModalWithMessage(selected.modalTitle, selected.modalContent);
-      }
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const selected = messages[randomIndex];
+
+    document.getElementById('txt-target').innerText = selected.text;
+
+    if (selected.trigger) {
+      showModalWithMessage(selected.modalTitle, selected.modalContent);
     }
+  }
 
-    function showModalWithMessage(title, content) {
-      const modal = document.getElementById('modal');
-      modal.classList.add('active');
-      modal.querySelector('h2').innerText = title;
-      modal.querySelector('p').innerText = content;
-    }
+  function showModalWithMessage(title, content) {
+    const modal = document.getElementById('modal');
+    modal.classList.add('active');
+    modal.querySelector('h2').innerText = title;
+    modal.querySelector('p').innerText = content;
+  }
 
-    function closeModal() {
-      document.getElementById('modal').classList.remove('active');
-    }
-  
-<footer><p> &copy; 2025 藍京網頁設計工作室corp </p></footer>
-<div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.remove('active');
+  }
+</script>
 </body>
 </html>
