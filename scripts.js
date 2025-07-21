@@ -11,9 +11,9 @@ AOS.init({duration:800});
 
 // 切換文字
 // 切換文字（隨機三句）
-function changeText() {
+/*function changeText() {
   const texts = [
-    '文改變.',
+   '文改變.',
     '字變文字.',
     '已變?',
 '霓虹閃爍的巷口，記憶在數據洪流中碎裂成聲音的殘影。',
@@ -22,7 +22,7 @@ function changeText() {
   ];
   const randomIndex = Math.floor(Math.random() * texts.length);
   document.getElementById('txt-target').innerText = texts[randomIndex];
-}
+}*/
 
 
 
