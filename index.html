@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&display=swap" rel="stylesheet" />
-
   <style>
     body {
       background-color: #0d0d0d;
@@ -21,13 +20,63 @@
       padding: 0;
       font-family: 'Orbitron', sans-serif;
     }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #111;
+      position: relative;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: #00fff7;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background-color: #00fff7;
+      border-radius: 2px;
+    }
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 2rem;
+        background-color: #111;
+        padding: 1rem;
+        border-radius: 8px;
+        width: 150px;
+        z-index: 1000;
+      }
+      nav.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+    }
 
     #welcome {
-      font-size: 60px;
+      font-size: 36px;
       font-weight: 900;
       text-align: center;
-      margin-top: 5vh;
+      margin: 1rem auto 2rem;
       text-shadow: 0 0 5px #00fff7, 0 0 10px #00fff7, 0 0 20px #00ffff;
+      max-width: 600px;
     }
 
     #txt-target {
@@ -49,7 +98,9 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      margin: 1rem;
+      margin: 1rem auto;
+      display: block;
+      max-width: 600px;
     }
 
     button:hover {
@@ -59,7 +110,7 @@
     .modal {
       display: none;
       position: fixed;
-      z-index: 999;
+      z-index: 9999;
       top: 0;
       left: 0;
       width: 100vw;
@@ -69,11 +120,9 @@
       justify-content: center;
       align-items: center;
     }
-
     .modal.active {
       display: flex;
     }
-
     .modal .content {
       background: rgba(20, 20, 20, 0.9);
       border: 2px solid #00fff7;
@@ -85,46 +134,54 @@
       box-shadow: 0 0 15px #00ffff, 0 0 30px #00fff7;
     }
 
-    nav {
-      text-align: center;
-      padding: 1rem;
-    }
-
-    nav a {
-      color: #00fff7;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-size: 18px;
-    }
-
-    /* Swiper 輪播樣式 */
+    /* Swiper */
     .swiper {
       width: 100%;
-      padding: 1rem 0;
       max-width: 600px;
-      margin: auto;
+      margin: 0 auto 2rem;
+      padding: 1rem 0;
     }
-
     .swiper-slide {
       text-align: center;
+      position: relative;
+    }
+    .swiper-slide img {
+      width: 360px;
+      max-width: 90%;
+      border-radius: 12px;
     }
 
-   .swiper-slide img,
-.carousel-static img {
-  width: 360px; /* 原 200px，擴大至 280px 更符合視覺比例 */
-  max-width: 90%; /* 手機時仍能自適應 */
-}
-
-
-    /* 靜態備援圖片列 */
+    /* 靜態備援 */
     .carousel-static {
       text-align: center;
       display: none;
+      max-width: 600px;
+      margin: 0 auto;
     }
-
     .carousel-static img {
       width: 200px;
       margin: 0.5rem;
+    }
+
+    /* 留言板 */
+    .container textarea {
+      width: 100%;
+      border-radius: 4px;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+    }
+    .comment-list {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      list-style: none;
+      padding-left: 0;
+      color: #00fff7;
+    }
+    .comment-list li {
+      border-bottom: 1px solid #00fff7;
+      padding: 0.5rem 0;
     }
 
     footer {
@@ -132,55 +189,53 @@
       padding: 2rem 0;
       font-size: 14px;
     }
-@media (max-width: 768px) {
-  #welcome {
-    font-size: 36px;
-    margin-top: 3vh;
-  }
 
-  #txt-target {
-    font-size: 18px;
-    padding: 0.75rem;
-    width: 90%;
-  }
-
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  nav a {
-    font-size: 16px;
-    margin: 0.5rem;
-  }
-
-  .swiper {
-    width: 90%;
-  }
-
-  .swiper-slide img,
-  .carousel-static img {
-    width: 140px;
-  }
-
-  button {
-    width: 80%;
-    font-size: 16px;
-  }
-
-  textarea {
-    width: 100%;
-    font-size: 14px;
-  }
-
-  footer {
-    font-size: 12px;
-    padding: 1rem 0;
-  }
-}
-
+    @media (max-width: 768px) {
+      #welcome {
+        font-size: 28px;
+        margin: 2rem auto 1rem;
+      }
+      #txt-target {
+        font-size: 18px;
+        padding: 0.75rem;
+        width: 90%;
+        max-width: 600px;
+      }
+      nav {
+        position: absolute;
+        top: 60px;
+        right: 2rem;
+        background-color: #111;
+        padding: 1rem;
+        border-radius: 8px;
+        width: 150px;
+      }
+      nav a {
+        font-size: 16px;
+        margin: 0.5rem 0;
+      }
+      button {
+        width: 90%;
+        font-size: 16px;
+        margin: 1rem auto;
+      }
+      .swiper-slide img {
+        width: 140px;
+      }
+      .carousel-static img {
+        width: 140px;
+      }
+      textarea {
+        font-size: 14px;
+      }
+      footer {
+        font-size: 12px;
+        padding: 1rem 0;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+    }
   </style>
 </head>
 <body>
@@ -191,6 +246,11 @@
       <a href="calculator.html">計算</a>
       <a href="music.html">個音分享</a>
     </nav>
+    <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </header>
 
   <main class="container" data-aos="fade-up">
@@ -199,17 +259,17 @@
     <!-- Swiper 輪播 -->
     <div class="swiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="assets/4.png" /></div>
-        <div class="swiper-slide"><img src="assets/5.png" /></div>
-        <div class="swiper-slide"><img src="assets/6.png" /></div>
+        <div class="swiper-slide"><img src="assets/4.png" alt="圖1" /></div>
+        <div class="swiper-slide"><img src="assets/5.png" alt="圖2" /></div>
+        <div class="swiper-slide"><img src="assets/6.png" alt="圖3" /></div>
       </div>
     </div>
 
     <!-- 備援靜態版 -->
     <div class="carousel-static" id="fallback-carousel">
-      <img src="assets/4.png" />
-      <img src="assets/5.png" />
-      <img src="assets/6.png" />
+      <img src="assets/4.png" alt="備援圖1" />
+      <img src="assets/5.png" alt="備援圖2" />
+      <img src="assets/6.png" alt="備援圖3" />
     </div>
 
     <button onclick="changeText()">接入終端</button>
@@ -228,12 +288,13 @@
   <!-- 留言板 -->
   <div class="container" data-aos="fade-up">
     <h2>留言板</h2>
-    <textarea id="comment-input" rows="3" style="width:100%;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem;"></textarea>
+    <textarea id="comment-input" rows="3" maxlength="200" placeholder="請輸入留言，最多200字"></textarea>
     <button onclick="postComment()">發表留言</button>
     <ul id="comment-list" class="comment-list"></ul>
   </div>
 
   <footer><p>&copy; 2025 藍京網頁設計工作室 corp</p></footer>
+
   <div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
 
   <!-- Scripts -->
@@ -246,13 +307,10 @@
       console.log('粒子載入成功');
     });
 
-    // 初始化 Swiper，失敗時啟用靜態備援
     try {
       const swiper = new Swiper('.swiper', {
         loop: true,
-        autoplay: {
-          delay: 3000,
-        },
+        autoplay: { delay: 3000 },
         spaceBetween: 10,
         slidesPerView: 'auto',
         centeredSlides: true,
@@ -296,7 +354,7 @@
       const list = document.getElementById('comment-list');
       if (input.value.trim() !== '' && input.value.length <= 200) {
         const li = document.createElement('li');
-        li.textContent = input.value;
+        li.textContent = input.value.trim();
         list.appendChild(li);
         input.value = '';
       } else if (input.value.length > 200) {
