@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>首頁 | 科技 | 藍京</title>
   <meta name="description" content="科技風格多頁網站，包含輪播、modal、留言板與登入功能" />
+  <meta name="keywords" content="科技, 網頁設計, 藍京, 網站開發" />
+  <meta name="author" content="藍京網頁設計工作室" />
   <link rel="icon" href="assets/favicon.ico" />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&display=swap" rel="stylesheet" />
 
@@ -94,7 +97,30 @@
       font-size: 18px;
     }
 
-    .carousel img {
+    /* Swiper 輪播樣式 */
+    .swiper {
+      width: 100%;
+      padding: 1rem 0;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .swiper-slide {
+      text-align: center;
+    }
+
+    .swiper-slide img {
+      width: 200px;
+      border-radius: 6px;
+    }
+
+    /* 靜態備援圖片列 */
+    .carousel-static {
+      text-align: center;
+      display: none;
+    }
+
+    .carousel-static img {
       width: 200px;
       margin: 0.5rem;
     }
@@ -104,6 +130,55 @@
       padding: 2rem 0;
       font-size: 14px;
     }
+@media (max-width: 768px) {
+  #welcome {
+    font-size: 36px;
+    margin-top: 3vh;
+  }
+
+  #txt-target {
+    font-size: 18px;
+    padding: 0.75rem;
+    width: 90%;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  nav a {
+    font-size: 16px;
+    margin: 0.5rem;
+  }
+
+  .swiper {
+    width: 90%;
+  }
+
+  .swiper-slide img,
+  .carousel-static img {
+    width: 140px;
+  }
+
+  button {
+    width: 80%;
+    font-size: 16px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  footer {
+    font-size: 12px;
+    padding: 1rem 0;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -116,20 +191,30 @@
     </nav>
   </header>
 
-  <div class="container" data-aos="fade-up">
+  <main class="container" data-aos="fade-up">
     <h1 id="welcome">系統啟動：回到邊界外自由—選擇的開始。</h1>
 
-    <div class="carousel">
-      <img src="assets/4.png">
-      <img src="assets/5.png">
-      <img src="assets/6.png">
+    <!-- Swiper 輪播 -->
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="assets/4.png" /></div>
+        <div class="swiper-slide"><img src="assets/5.png" /></div>
+        <div class="swiper-slide"><img src="assets/6.png" /></div>
+      </div>
+    </div>
+
+    <!-- 備援靜態版 -->
+    <div class="carousel-static" id="fallback-carousel">
+      <img src="assets/4.png" />
+      <img src="assets/5.png" />
+      <img src="assets/6.png" />
     </div>
 
     <button onclick="changeText()">接入終端</button>
     <p id="txt-target">等待接入訊息...</p>
-  </div>
+  </main>
 
-  <!-- Modal 彈窗 -->
+  <!-- Modal -->
   <div id="modal" class="modal" onclick="closeModal()">
     <div class="content" onclick="event.stopPropagation()">
       <h2>系統提示</h2>
@@ -152,11 +237,28 @@
   <!-- Scripts -->
   <script src="https://unpkg.com/particles.js"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script>
     AOS.init();
     particlesJS.load('particles-js', 'particles.json', () => {
       console.log('粒子載入成功');
     });
+
+    // 初始化 Swiper，失敗時啟用靜態備援
+    try {
+      const swiper = new Swiper('.swiper', {
+        loop: true,
+        autoplay: {
+          delay: 3000,
+        },
+        spaceBetween: 10,
+        slidesPerView: 'auto',
+        centeredSlides: true,
+      });
+    } catch (err) {
+      document.querySelector('.swiper').style.display = 'none';
+      document.getElementById('fallback-carousel').style.display = 'block';
+    }
 
     function changeText() {
       const messages = [
@@ -190,11 +292,13 @@
     function postComment() {
       const input = document.getElementById('comment-input');
       const list = document.getElementById('comment-list');
-      if (input.value.trim() !== '') {
+      if (input.value.trim() !== '' && input.value.length <= 200) {
         const li = document.createElement('li');
         li.textContent = input.value;
         list.appendChild(li);
         input.value = '';
+      } else if (input.value.length > 200) {
+        alert('留言不得超過 200 字');
       }
     }
   </script>
