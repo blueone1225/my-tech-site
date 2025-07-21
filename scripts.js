@@ -15,7 +15,10 @@ function changeText() {
   const texts = [
     '文改變.',
     '字變文字.',
-    '已變?'
+    '已變?',
+'霓虹閃爍的巷口，記憶在數據洪流中碎裂成聲音的殘影。',
+    '他在電路夢境裡迷失自己，心跳被機械節奏重寫。',
+    '城市的天空不再有星辰，只有監控在夜裡低語。'
   ];
   const randomIndex = Math.floor(Math.random() * texts.length);
   document.getElementById('txt-target').innerText = texts[randomIndex];
