@@ -32,6 +32,84 @@
     }
   </style>
 
+<style>
+    body {
+      background-color: #0d0d0d;
+      color: #00fff7;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #txt-target {
+      font-size: 28px;
+      margin: 1rem 0;
+      text-align: center;
+      padding: 1rem;
+      border: 1px solid #00fff7;
+      border-radius: 8px;
+      background-color: rgba(0,0,0,0.5);
+      max-width: 600px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      background: #00fff7;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 1rem;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00ffff;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal .content {
+      background: rgba(20, 20, 20, 0.9);
+      border: 2px solid #00fff7;
+      padding: 2rem;
+      border-radius: 12px;
+      color: #00fff7;
+      text-align: center;
+      max-width: 500px;
+      box-shadow: 0 0 15px #00ffff, 0 0 30px #00fff7;
+    }
+
+    .modal .content h2 {
+      margin-top: 0;
+    }
+
+    .modal .content button {
+      background-color: #00fff7;
+      color: #000;
+    }
+  </style>
+  
 </head>
 <body>
 <header>
@@ -47,6 +125,20 @@
 
     
   </div>
+ <h1>🧠 系統接入模擬器</h1>
+
+  <button onclick="changeText()">接入終端</button>
+  <p id="txt-target">等待接入訊息...</p>
+
+  <!-- Modal 彈跳視窗 -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <div class="content" onclick="event.stopPropagation()">
+      <h2>系統提示</h2>
+      <p>（訊息內容將在這顯示）</p>
+      <button onclick="closeModal()">確認</button>
+    </div>
+  </div>
+
   <button class="text-btn" onclick="changeText()"><i class="fas fa-sync-alt"></i> 點點看</button>
   <p id="txt-target"> 人機回應 </p>
   <button onclick="showModal()"><i class="fas fa-comment-dots"></i> 彈窗</button>
@@ -63,11 +155,45 @@
   <button onclick="postComment()"><i class="fas fa-paper-plane"></i> 發表留言</button>
   <ul id="comment-list" class="comment-list"></ul>
 </div>
+  
 <script src="https://unpkg.com/particles.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="scripts.js"></script>
 <script>particlesJS.load('particles-js','particles.json',function(){console.log('粒子載入');});</script>
+function changeText() {
+      const messages = [
+        { text: '資料下載中...', trigger: false },
+        { text: '你不是你', trigger: true, modalTitle: '警告：身分錯誤', modalContent: '系統偵測到記憶重疊。你的意識不屬於此實體。' },
+        { text: '訊號干擾中…', trigger: false },
+        { text: 'AI 分裂體重組完成', trigger: false },
+        { text: '訪問權限不足', trigger: false },
+        { text: '請立即前往主控制塔', trigger: true, modalTitle: '任務啟動', modalContent: '你已被選中。接下來將進入區域 D-27，請小心。' },
+        { text: '你已離線 3942 秒', trigger: false },
+        { text: '系統觀察中…', trigger: true, modalTitle: '監控提示', modalContent: '你的所有動作皆被記錄。請勿違規。' }
+      ];
+
+      const randomIndex = Math.floor(Math.random() * messages.length);
+      const selected = messages[randomIndex];
+
+      document.getElementById('txt-target').innerText = selected.text;
+
+      if (selected.trigger) {
+        showModalWithMessage(selected.modalTitle, selected.modalContent);
+      }
+    }
+
+    function showModalWithMessage(title, content) {
+      const modal = document.getElementById('modal');
+      modal.classList.add('active');
+      modal.querySelector('h2').innerText = title;
+      modal.querySelector('p').innerText = content;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+  
 <footer><p> &copy; 2025 藍京網頁設計工作室corp </p></footer>
 <div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
 </body>
