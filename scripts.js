@@ -10,9 +10,19 @@ document.addEventListener('DOMContentLoaded',()=>{
 AOS.init({duration:800});
 
 // 切換文字
-function changeText(){
-  document.getElementById('txt-target').innerText='文字已被改變！';
+// 切換文字（隨機三句）
+function changeText() {
+  const texts = [
+    '文改變.',
+    '字變文字.',
+    '已變?'
+  ];
+  const randomIndex = Math.floor(Math.random() * texts.length);
+  document.getElementById('txt-target').innerText = texts[randomIndex];
 }
+
+
+
 
 // Modal
 function showModal(){document.getElementById('modal').style.display='flex';}
