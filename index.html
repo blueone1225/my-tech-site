@@ -1,21 +1,26 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title> 首頁 | 科技  | 藍京 </title>
+  <title>首頁 | 科技 | 藍京</title>
   <meta name="description" content="我的科技風格多頁網站，包含輪播、modal、留言板與登入功能">
   <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   <link rel="stylesheet" href="styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
 
-<style>
+  <style>
     body {
       background-color: #0d0d0d;
       color: #00fff7;
       margin: 0;
       padding: 0;
       font-family: 'Orbitron', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
 
     #welcome {
@@ -29,20 +34,6 @@
         0 0 20px #00ffff,
         0 0 40px #00ffff,
         0 0 80px #00ffff;
-    }
-  </style>
-
-<style>
-    body {
-      background-color: #0d0d0d;
-      color: #00fff7;
-      font-family: 'Orbitron', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
     }
 
     #txt-target {
@@ -107,25 +98,19 @@
     .modal .content button {
       background-color: #00fff7;
       color: #000;
+      margin-top: 1rem;
+      cursor: pointer;
     }
   </style>
-  
 </head>
 <body>
-<header>
-  <nav><a href="index.html">首頁</a><a href="login.html"> 登入 / 離開 </a><a href="calculator.html"> 計算 </a><a href="music.html"> 個音分享 </a></nav>
-</header>
-<div class="container" data-aos="fade-up">
+  <header>
+    <nav><a href="index.html">首頁</a><a href="login.html">登入 / 離開</a><a href="calculator.html">計算</a><a href="music.html">個音分享</a></nav>
+  </header>
+
   <h1 id="welcome">系統啟動：回到邊界外自由—選擇的開始。</h1>
-  <div class="carousel">
 
-  <img src="assets/4.png">
-  <img src="assets/5.png">
-  <img src="assets/6.png">
-
-    
-  </div>
- <h1>🧠 系統接入模擬器</h1>
+  <h1>🧠 系統接入模擬器</h1>
 
   <button onclick="changeText()">接入終端</button>
   <p id="txt-target">等待接入訊息...</p>
@@ -139,29 +124,8 @@
     </div>
   </div>
 
-   <!--<button class="text-btn" onclick="changeText()"><i class="fas fa-sync-alt"></i> 點點看</button>
-  <p id="txt-target"> 人機回應 </p>-->
-  <button onclick="showModal()"><i class="fas fa-comment-dots"></i> 彈窗</button>
-  <div id="modal" class="modal" onclick="closeModal()">
-    <div class="content" onclick="e=>e.stopPropagation()">
-      <h2>彈跳視窗</h2><p>好奇是起點</p><p>點擊外圍或下方按鈕可關閉。</p>
-      <button onclick="closeModal()">關閉</button>
-    </div>
-  </div>
-</div>
-<div class="container" data-aos="fade-up">
-  <h2>留言板</h2>
-  <textarea id="comment-input" rows="3" style="width:100%;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem;"></textarea>
-  <button onclick="postComment()"><i class="fas fa-paper-plane"></i> 發表留言</button>
-  <ul id="comment-list" class="comment-list"></ul>
-</div>
-  
-<script src="https://unpkg.com/particles.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<script src="scripts.js"></script>
-<script>particlesJS.load('particles-js','particles.json',function(){console.log('粒子載入');});</script>
-function changeText() {
+  <script>
+    function changeText() {
       const messages = [
         { text: '資料下載中...', trigger: false },
         { text: '你不是你', trigger: true, modalTitle: '警告：身分錯誤', modalContent: '系統偵測到記憶重疊。你的意識不屬於此實體。' },
@@ -193,8 +157,9 @@ function changeText() {
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
     }
-  
-<footer><p> &copy; 2025 藍京網頁設計工作室corp </p></footer>
-<div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
+  </script>
+
+  <footer><p> &copy; 2025 藍京網頁設計工作室corp </p></footer>
+  <div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
 </body>
 </html>
