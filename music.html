@@ -3,23 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>影音模型器 | 科技感網站</title>
+  <title>影音模型器 | 賽博朋克音樂播放器</title>
   <style>
     :root {
-      --color-primary: #ff66cc;
-      --color-accent: #66ccff;
-      --color-bg-dark: #0a0a0f;
-      --color-bg-light: #f8f8ff;
-      --color-text-dark: #f0f0ff;
-      --color-text-light: #111;
+      --primary: #ff66cc;
+      --accent: #66ccff;
+      --bg-dark: #0a0a0f;
+      --bg-light: #f8f8ff;
+      --text-dark: #f0f0ff;
+      --text-light: #111;
     }
+
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: var(--color-bg-dark);
-      color: var(--color-text-dark);
-      transition: background 0.5s, color 0.5s;
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      transition: background 0.4s, color 0.4s;
+      overflow-x: hidden;
+    }
+
+    video#bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.2;
+      pointer-events: none;
     }
 
     header nav {
@@ -27,92 +40,101 @@
       justify-content: center;
       gap: 2rem;
       padding: 1rem;
-      background: linear-gradient(90deg, #1a1a2f, #111122);
+      background: rgba(10, 10, 20, 0.8);
+      backdrop-filter: blur(8px);
     }
 
     nav a {
-      color: var(--color-primary);
+      color: var(--primary);
       text-decoration: none;
       font-weight: bold;
       transition: color 0.3s, text-shadow 0.3s;
     }
 
     nav a:hover {
-      color: var(--color-accent);
-      text-shadow: 0 0 8px var(--color-accent);
+      color: var(--accent);
+      text-shadow: 0 0 8px var(--accent);
     }
 
     .container {
       text-align: center;
-      padding: 4rem 2rem;
+      padding: 3rem 1rem;
     }
 
     h1 {
-      font-size: 2.5rem;
-      color: var(--color-primary);
-      text-shadow: 0 0 12px var(--color-primary);
+      font-size: 2.2rem;
+      color: var(--primary);
+      text-shadow: 0 0 12px var(--primary);
       margin-bottom: 1rem;
     }
 
     .neon-player {
-      margin: 2rem auto;
-      padding: 2rem;
-      max-width: 320px;
-      background: linear-gradient(145deg, #111222, #1a1a2f);
-      border: 2px solid var(--color-accent);
+      margin: 0 auto;
+      padding: 1.5rem;
+      max-width: 400px;
+      background: rgba(20, 20, 40, 0.9);
+      border: 2px solid var(--accent);
       border-radius: 20px;
-      box-shadow:
-        0 0 15px var(--color-accent),
-        0 0 30px var(--color-primary);
-      animation: pulse 2s infinite alternate;
-    }
-
-    @keyframes pulse {
-      from {
-        box-shadow:
-          0 0 15px var(--color-accent),
-          0 0 30px var(--color-primary);
-      }
-      to {
-        box-shadow:
-          0 0 25px var(--color-accent),
-          0 0 50px var(--color-primary);
-      }
+      box-shadow: 0 0 15px var(--accent), 0 0 30px var(--primary);
     }
 
     .btn {
-      background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+      background: linear-gradient(to right, var(--primary), var(--accent));
       border: none;
       border-radius: 50px;
-      padding: 0.8rem 2rem;
+      padding: 0.7rem 2rem;
       font-size: 1rem;
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 0 10px var(--color-primary);
+      margin-bottom: 1rem;
+      box-shadow: 0 0 10px var(--primary);
       transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
 
     .btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 15px var(--color-accent);
+      box-shadow: 0 0 15px var(--accent);
+    }
+
+    .sliders {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    .sliders input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    canvas#visualizer {
+      width: 100%;
+      height: 100px;
+      display: block;
+      margin-top: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
     }
 
     .toggle-mode {
       margin-top: 2rem;
       cursor: pointer;
       font-size: 0.9rem;
-      color: var(--color-accent);
+      color: var(--accent);
       text-decoration: underline;
     }
 
     /* Light mode */
     body.light {
-      background: var(--color-bg-light);
-      color: var(--color-text-light);
+      background: var(--bg-light);
+      color: var(--text-light);
     }
 
     body.light nav {
-      background: linear-gradient(90deg, #f0f0f0, #e0e0f0);
+      background: #ddd;
     }
 
     body.light .neon-player {
@@ -125,16 +147,17 @@
       box-shadow: none;
     }
 
-    body.light .btn:hover {
-      box-shadow: 0 0 10px #aaa;
-    }
-
     body.light .toggle-mode {
       color: #0077cc;
     }
   </style>
 </head>
 <body>
+  <!-- 背景動畫影片 -->
+  <video id="bg-video" autoplay loop muted>
+    <source src="https://assets.codepen.io/1468070/Hyperplexed+Background.mp4" type="video/mp4" />
+  </video>
+
   <header>
     <nav>
       <a href="index.html">首頁</a>
@@ -149,14 +172,32 @@
     <div class="neon-player">
       <audio id="player" src="assets/sample.mp3"></audio>
       <button class="btn" id="toggleBtn">▶ 播放</button>
+
+      <div class="sliders">
+        <label style="color:#ccc; font-size: 0.9rem;">音量</label>
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
+      </div>
+
+      <div class="sliders">
+        <label style="color:#ccc; font-size: 0.9rem;">進度</label>
+        <input type="range" id="progress" min="0" value="0">
+      </div>
+
+      <canvas id="visualizer"></canvas>
     </div>
+
     <div class="toggle-mode" onclick="toggleMode()">切換暗 / 亮色模式</div>
   </div>
 
   <script>
     const player = document.getElementById('player');
     const toggleBtn = document.getElementById('toggleBtn');
+    const volumeSlider = document.getElementById('volume');
+    const progressSlider = document.getElementById('progress');
+    const canvas = document.getElementById('visualizer');
+    const ctx = canvas.getContext('2d');
 
+    // 自訂播放按鈕
     toggleBtn.addEventListener('click', () => {
       if (player.paused) {
         player.play();
@@ -167,9 +208,72 @@
       }
     });
 
+    // 音量控制
+    volumeSlider.addEventListener('input', () => {
+      player.volume = volumeSlider.value;
+    });
+
+    // 進度條控制
+    player.addEventListener('loadedmetadata', () => {
+      progressSlider.max = player.duration;
+    });
+
+    player.addEventListener('timeupdate', () => {
+      progressSlider.value = player.currentTime;
+    });
+
+    progressSlider.addEventListener('input', () => {
+      player.currentTime = progressSlider.value;
+    });
+
+    // 暗 / 亮色切換
     function toggleMode() {
       document.body.classList.toggle('light');
     }
+
+    // 音波動畫
+    const audioCtx = new AudioContext();
+    const analyser = audioCtx.createAnalyser();
+    const source = audioCtx.createMediaElementSource(player);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 64;
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function draw() {
+      requestAnimationFrame(draw);
+      analyser.getByteFrequencyData(dataArray);
+
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const barWidth = (canvas.width / bufferLength);
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        const barHeight = dataArray[i] * 0.8;
+        const r = 255;
+        const g = 100 + (barHeight / 2);
+        const b = 200 + i * 2;
+
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+        x += barWidth;
+      }
+    }
+
+    draw();
+
+    // 啟動音訊上下文（首次互動後）
+    toggleBtn.addEventListener('click', () => {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    });
   </script>
 </body>
 </html>
