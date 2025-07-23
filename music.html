@@ -1,31 +1,94 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>  影音模型器 | 科技感網站</title>
+  <title>影音模型器 | 科技感網站</title>
   <meta name="description" content="播放背景音樂，支援播放/暫停功能的簡單播放器" />
   <link rel="icon" href="assets/favicon.ico" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0a0a0f;
+      color: #f0f0ff;
+    }
+
+    header nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      background-color: #111122;
+    }
+
+    nav a {
+      color: #ff66cc;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #66ccff;
+    }
+
+    .container {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #ff99ff;
+      text-shadow: 0 0 10px #ff66cc;
+    }
+
+    .neon-audio {
+      margin-top: 2rem;
+      display: inline-block;
+      background-color: #111122;
+      border: 2px solid #66ccff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 0 20px #66ccff66, 0 0 40px #ff66cc44;
+    }
+
+    audio::-webkit-media-controls-panel {
+      background-color: #222;
+      color: #ff66cc;
+    }
+
+    audio {
+      width: 100%;
+      max-width: 300px;
+      filter: drop-shadow(0 0 5px #66ccff);
+    }
+
+    p {
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
   <header>
     <nav>
       <a href="index.html">首頁</a>
       <a href="login.html">登入 / 登出</a>
-      <a href="calculator.html"> 費用試算 </a>
-      <a href="music.html"> 影音模型 </a>
+      <a href="calculator.html">費用試算</a>
+      <a href="music.html">影音模型</a>
     </nav>
   </header>
 
   <div class="container">
-    <h2> 如果愛忘了 </h2>
-    <audio controls>
-      <source src="assets/sample.mp3" type="audio/mpeg" />
-      您的瀏覽器不支援音樂播放。
-    </audio>
+    <h1>如果愛忘了</h1>
+    <p>輕點下方播放器，即可播放音樂。</p>
+    <div class="neon-audio">
+      <audio controls>
+        <source src="assets/sample.mp3" type="audio/mpeg" />
+        您的瀏覽器不支援音樂播放。
+      </audio>
+    </div>
   </div>
-
-  <script src="scripts.js"></script>
 </body>
 </html>
