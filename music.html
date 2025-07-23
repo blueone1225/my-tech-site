@@ -173,6 +173,10 @@
       <audio id="player" src="assets/sample.mp3"></audio>
       <button class="btn" id="toggleBtn">▶ 播放</button>
 
+      <!-- 上傳音檔功能 -->
+      <input type="file" id="audioUpload" accept="audio/*" style="margin-bottom: 1rem;">
+      <p id="audioFileName" style="color: var(--text-dark); font-size: 1rem;"></p>
+
       <div class="sliders">
         <label style="color:#ccc; font-size: 0.9rem;">音量</label>
         <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
@@ -196,6 +200,8 @@
     const progressSlider = document.getElementById('progress');
     const canvas = document.getElementById('visualizer');
     const ctx = canvas.getContext('2d');
+    const audioUpload = document.getElementById('audioUpload');
+    const audioFileName = document.getElementById('audioFileName');
 
     // 自訂播放按鈕
     toggleBtn.addEventListener('click', () => {
@@ -272,6 +278,21 @@
     toggleBtn.addEventListener('click', () => {
       if (audioCtx.state === 'suspended') {
         audioCtx.resume();
+      }
+    });
+
+    // 音檔上傳
+    audioUpload.addEventListener('change', () => {
+      const file = audioUpload.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          player.src = e.target.result;
+          audioFileName.textContent = `音檔名稱：${file.name}`;
+          player.play();
+          toggleBtn.textContent = '⏸ 暫停';
+        };
+        reader.readAsDataURL(file);
       }
     });
   </script>
