@@ -350,7 +350,16 @@
     }
 
 
-function postComment() {
+// 隨機回應留言者
+  const randomResponses = [
+    '謝謝你的留言，系統正在處理中。',
+    '你的意見已被接收，正在分析中。',
+    '留言成功，系統將立即回應。',
+    '你的留言已提交，請耐心等待。',
+    '感謝你的回饋，正在進行必要的調整。'
+  ];
+
+    function postComment() {
   const input = document.getElementById('comment-input');
   const list = document.getElementById('comment-list');
   if (input.value.trim() !== '' && input.value.length <= 200) {
@@ -375,6 +384,7 @@ function postComment() {
     alert('留言不得超過 200 字');
   }
 }
+
 
     
   </script>
