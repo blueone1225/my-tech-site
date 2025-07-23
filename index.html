@@ -349,18 +349,34 @@
       document.getElementById('modal').classList.remove('active');
     }
 
-    function postComment() {
-      const input = document.getElementById('comment-input');
-      const list = document.getElementById('comment-list');
-      if (input.value.trim() !== '' && input.value.length <= 200) {
-        const li = document.createElement('li');
-        li.textContent = input.value.trim();
-        list.appendChild(li);
-        input.value = '';
-      } else if (input.value.length > 200) {
-        alert('留言不得超過 200 字');
-      }
-    }
+
+function postComment() {
+  const input = document.getElementById('comment-input');
+  const list = document.getElementById('comment-list');
+  if (input.value.trim() !== '' && input.value.length <= 200) {
+    // 創建留言
+    const li = document.createElement('li');
+    li.textContent = input.value.trim();
+    list.appendChild(li);
+
+    // 隨機選擇一個回應
+    const randomResponse = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+
+    // 創建回應項目
+    const responseLi = document.createElement('li');
+    responseLi.textContent = randomResponse;
+    responseLi.style.fontStyle = 'italic';
+    responseLi.style.color = '#00ffff'; // 改變回應顏色，使其看起來區別於留言
+    list.appendChild(responseLi);
+
+    // 清空留言輸入框
+    input.value = '';
+  } else if (input.value.length > 200) {
+    alert('留言不得超過 200 字');
+  }
+}
+
+    
   </script>
 </body>
 </html>
