@@ -1,41 +1,162 @@
-﻿<!DOCTYPE html>
-<html lang="zh-TW">
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>計算機 | 科技感網站</title>
-  <meta name="description" content="簡易科技風格計算機頁面，支援基本加減乘除運算" />
-  <link rel="icon" href="assets/favicon.ico" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>網站開發方案試算</title>
+<style>
+  body {
+    background-color: #111827;
+    color: #e0f2fe;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0,255,255,0.1);
+  }
 
+  h2 {
+    text-align: center;
+    color: #7dd3fc;
+  }
 
+  label {
+    margin-top: 15px;
+    display: block;
+    font-weight: bold;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: #1f2937;
+    color: #e0f2fe;
+    border: 1px solid #38bdf8;
+    border-radius: 6px;
+  }
+
+  .plan-details {
+    background: #1e293b;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border-left: 4px solid #38bdf8;
+  }
+
+  .result {
+    margin-top: 30px;
+    background-color: #1e2a40;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px dashed #7dd3fc;
+  }
+
+  .result p {
+    margin: 8px 0;
+    font-size: 16px;
+  }
+
+  .highlight {
+    font-size: 20px;
+    color: #38f2ff;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="index.html">首頁</a>
-      <a href="login.html">登入 / 登出</a>
-      <a href="calculator.html">計算機</a>
-      <a href="music.html">音樂</a>
-    </nav>
-  </header>
 
-  <div class="container">
-    <h2>計算機</h2>
-    <label>數字1：<input type="number" id="num1" /></label><br /><br />
-    <label>數字2：<input type="number" id="num2" /></label><br /><br />
-    <label>運算：
-      <select id="op">
-        <option value="add">加</option>
-        <option value="sub">減</option>
-        <option value="mul">乘</option>
-        <option value="div">除</option>
-      </select>
-    </label><br /><br />
-    <button onclick="calc()">計算</button><br /><br />
-    <label>結果：<input type="text" id="result" readonly /></label>
-  </div>
+<h2>💻 網站開發費用試算</h2>
 
-  <script src="scripts.js"></script>
+<label for="plan">請選擇方案：</label>
+<select id="plan">
+  <option value="A">A 方案（NT$ 15,000）</option>
+  <option value="B">B 方案（NT$ 25,000）</option>
+  <option value="C">C 方案（NT$ 45,000）</option>
+</select>
+
+<div class="plan-details" id="planDescription">
+  👉 選擇方案後，這裡會顯示開發內容說明。
+</div>
+
+<label for="discount">折扣選擇：</label>
+<select id="discount">
+  <option value="1">無折扣（100%）</option>
+  <option value="0.9">9 折（90%）</option>
+  <option value="0.85">85 折（85%）</option>
+  <option value="0.8">8 折（80%）</option>
+</select>
+
+<label for="shipping">交付管理費（元）：</label>
+<select id="shipping">
+  <option value="0">免收</option>
+  <option value="200">NT$200</option>
+  <option value="500">NT$500（含部署 + 技術驗收）</option>
+</select>
+
+<div class="result" id="result">
+  <p>原價：NT$ <span id="originalPrice">15000</span></p>
+  <p>折扣後：NT$ <span id="discountedPrice">15000</span></p>
+  <p>節省金額：NT$ <span id="savedAmount">0</span></p>
+  <p>運費：NT$ <span id="shippingCost">0</span></p>
+  <hr />
+  <p class="highlight">總計：NT$ <span id="finalTotal">15000</span></p>
+</div>
+
+<script>
+  const planSelect = document.getElementById('plan');
+  const discountSelect = document.getElementById('discount');
+  const shippingSelect = document.getElementById('shipping');
+
+  const planDescription = document.getElementById('planDescription');
+  const originalPrice = document.getElementById('originalPrice');
+  const discountedPrice = document.getElementById('discountedPrice');
+  const savedAmount = document.getElementById('savedAmount');
+  const shippingCost = document.getElementById('shippingCost');
+  const finalTotal = document.getElementById('finalTotal');
+
+  const planData = {
+    A: {
+      price: 15000,
+      desc: `📄 單頁形象網站：RWD 設計、靜態頁面、表單提交、簡單佈局。適合小型品牌快速上線。`
+    },
+    B: {
+      price: 25000,
+      desc: `📁 中型企業官網：多頁結構（約5頁）、後台管理系統、RWD 響應式設計、部落格模組、聯絡功能。`
+    },
+    C: {
+      price: 45000,
+      desc: `🛒 客製化平台 / 電商：完整前後台、會員系統、訂單處理、API 串接、後台數據管理。`
+    }
+  };
+
+  function update() {
+    const selectedPlan = planSelect.value;
+    const discountRate = parseFloat(discountSelect.value);
+    const shippingFee = parseFloat(shippingSelect.value);
+
+    const plan = planData[selectedPlan];
+    const price = plan.price;
+    const discounted = price * discountRate;
+    const saved = price - discounted;
+    const total = discounted + shippingFee;
+
+    planDescription.textContent = plan.desc;
+    originalPrice.textContent = price.toLocaleString();
+    discountedPrice.textContent = discounted.toLocaleString(undefined, {maximumFractionDigits: 0});
+    savedAmount.textContent = saved.toLocaleString(undefined, {maximumFractionDigits: 0});
+    shippingCost.textContent = shippingFee.toLocaleString();
+    finalTotal.textContent = total.toLocaleString(undefined, {maximumFractionDigits: 0});
+  }
+
+  planSelect.addEventListener('change', update);
+  discountSelect.addEventListener('change', update);
+  shippingSelect.addEventListener('change', update);
+
+  update(); // 初始化
+</script>
+
 </body>
 </html>
