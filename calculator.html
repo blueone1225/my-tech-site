@@ -5,32 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>網站開發方案試算</title>
 <style>
-  /* 全螢幕字串雨 canvas */
-  body, html {
-    margin: 0; padding: 0; overflow: hidden;
-    background-color: black;
-    height: 100%;
+  /* 重置 */
+  * {
+    box-sizing: border-box;
   }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: black; /* fallback */
+  }
+
+  /* Canvas背景 */
   canvas#matrixCanvas {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 0;
     display: block;
+    background-color: black;
   }
 
-  /* 前景內容區 */
+  /* 內容區 */
   .content {
     position: relative;
     z-index: 1;
     max-width: 600px;
     margin: 40px auto;
-    background: rgba(17, 24, 39, 0.9);
-    color: #e0f2fe;
-    font-family: 'Segoe UI', sans-serif;
     padding: 30px;
+    background: rgba(17, 24, 39, 0.85);
+    color: #e0f2fe;
     border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
   }
 
   h2 {
@@ -91,9 +97,45 @@
     font-size: 18px;
     text-decoration: none;
     margin: 0 10px;
+    transition: color 0.3s;
   }
   nav a:hover {
     color: #38bdf8;
+  }
+
+  /* 手機版響應式 */
+  @media (max-width: 480px) {
+    .content {
+      margin: 20px 10px;
+      padding: 20px;
+      max-width: 95vw;
+    }
+    h2 {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+    label {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    select {
+      font-size: 14px;
+      padding: 12px 10px;
+    }
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    nav a {
+      margin: 0;
+      padding: 8px 0;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    nav a:hover {
+      background-color: rgba(56, 189, 248, 0.2);
+    }
   }
 </style>
 </head>
@@ -153,9 +195,11 @@
   // 黑客帝國字串雨動畫設定
   const canvas = document.getElementById('matrixCanvas');
   const ctx = canvas.getContext('2d');
+
   let width = canvas.width = window.innerWidth;
   let height = canvas.height = window.innerHeight;
 
+  // 字串組合（片假名 + 英文大寫 + 數字）
   const katakana = 'アァカサタナハマヤャラワガザダバパビピフブプヘベペホボモヨョロヲンヰヱヴ';
   const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const nums = '0123456789';
@@ -184,8 +228,10 @@
   }
 
   function draw() {
+    // 半透明黑色覆蓋實現軌跡殘影效果
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, width, height);
+
     ctx.font = fontSize + 'px monospace';
 
     for (let i = 0; i < rainDrops.length; i++) {
@@ -201,6 +247,7 @@
       }
       rainDrops[i]++;
     }
+
     playBeep();
   }
 
@@ -222,7 +269,7 @@
     rainDrops = Array(columns).fill(1);
   });
 
-  // --- 費用試算邏輯 ---
+  // 費用試算邏輯
   const planSelect = document.getElementById('plan');
   const discountSelect = document.getElementById('discount');
   const shippingSelect = document.getElementById('shipping');
@@ -262,10 +309,10 @@
 
     planDescription.textContent = plan.desc;
     originalPrice.textContent = price.toLocaleString();
-    discountedPrice.textContent = discounted.toLocaleString(undefined, { maximumFractionDigits: 0 });
-    savedAmount.textContent = saved.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    discountedPrice.textContent = discounted.toLocaleString(undefined, {maximumFractionDigits: 0});
+    savedAmount.textContent = saved.toLocaleString(undefined, {maximumFractionDigits: 0});
     shippingCost.textContent = shippingFee.toLocaleString();
-    finalTotal.textContent = total.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    finalTotal.textContent = total.toLocaleString(undefined, {maximumFractionDigits: 0});
   }
 
   planSelect.addEventListener('change', update);
@@ -275,6 +322,5 @@
   update(); // 初始化
 
 </script>
-
 </body>
 </html>
