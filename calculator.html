@@ -20,19 +20,19 @@
   }
 
   /* 前景內容區 */
-  .content {
-    position: relative;
-    z-index: 1;
-    max-width: 600px;
-    margin: 40px auto;
-    background: rgba(17, 24, 39, 0.9);
-    color: #e0f2fe;
-    font-family: 'Segoe UI', sans-serif;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
-  }
-
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 90vw;
+  margin: 4vh auto;
+  background: rgba(17, 24, 39, 0.9);
+  color: #e0f2fe;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+}
+  
   h2 {
     text-align: center;
     color: #7dd3fc;
@@ -54,6 +54,20 @@
     border: 1px solid #38bdf8;
     border-radius: 6px;
   }
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+  label {
+    font-size: 1rem;
+  }
+  select {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
 
   .plan-details {
     background: #1e293b;
