@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>網站開發方案試算</title>
 <style>
-  body {
-    background-color: #111827;
-    color: #e0f2fe;
+  /* 重置 */
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    overflow: hidden;
     font-family: 'Segoe UI', sans-serif;
+    background-color: black; /* fallback */
+  }
+
+  /* Canvas背景 */
+  canvas#matrixCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    display: block;
+    background-color: black;
+  }
+
+  /* 內容區 */
+  .content {
+    position: relative;
+    z-index: 1;
     max-width: 600px;
     margin: 40px auto;
     padding: 30px;
+    background: rgba(17, 24, 39, 0.85);
+    color: #e0f2fe;
     border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0,255,255,0.1);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
   }
 
   h2 {
@@ -64,70 +87,189 @@
     color: #38f2ff;
     font-weight: bold;
   }
-nav a {
-  color: #7dd3fc;  /* 粉藍色 */
-  font-size: 18px;  /* 字體加大 */
-  text-decoration: none;
-  margin: 0 10px;
-}
 
-nav a:hover {
-  color: #38bdf8;  /* 鼠標懸停顏色變化 */
-}
+  nav {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  nav a {
+    color: #7dd3fc;
+    font-size: 18px;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+  }
+  nav a:hover {
+    color: #38bdf8;
+  }
 
-
-
-  
+  /* 手機版響應式 */
+  @media (max-width: 480px) {
+    .content {
+      margin: 20px 10px;
+      padding: 20px;
+      max-width: 95vw;
+    }
+    h2 {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+    label {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    select {
+      font-size: 14px;
+      padding: 12px 10px;
+    }
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    nav a {
+      margin: 0;
+      padding: 8px 0;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    nav a:hover {
+      background-color: rgba(56, 189, 248, 0.2);
+    }
+  }
 </style>
 </head>
 <body>
-<header>
+
+<canvas id="matrixCanvas"></canvas>
+
+<div class="content">
+  <header>
     <nav>
       <a href="index.html">首頁</a>
       <a href="login.html">登入 / 登出</a>
-      <a href="calculator.html"> 費用試算 </a>
-      <a href="music.html"> 影音模型 </a>
+      <a href="calculator.html">費用試算</a>
+      <a href="music.html">影音模型</a>
     </nav>
   </header>
-  
-<h2>💻 網站開發費用試算</h2>
 
-<label for="plan">請選擇方案：</label>
-<select id="plan">
-  <option value="A">A 方案（NT$ 15,000）</option>
-  <option value="B">B 方案（NT$ 25,000）</option>
-  <option value="C">C 方案（NT$ 45,000）</option>
-</select>
+  <h2>💻 網站開發費用試算</h2>
 
-<div class="plan-details" id="planDescription">
-  👉 選擇方案後，這裡會顯示開發內容說明。
-</div>
+  <label for="plan">請選擇方案：</label>
+  <select id="plan">
+    <option value="A">A 方案（NT$ 15,000）</option>
+    <option value="B">B 方案（NT$ 25,000）</option>
+    <option value="C">C 方案（NT$ 45,000）</option>
+  </select>
 
-<label for="discount">折扣選擇：</label>
-<select id="discount">
-  <option value="1">無折扣（100%）</option>
-  <option value="0.9">9 折（90%）</option>
-  <option value="0.85">85 折（85%）</option>
-  <option value="0.8">8 折（80%）</option>
-</select>
+  <div class="plan-details" id="planDescription">
+    👉 選擇方案後，這裡會顯示開發內容說明。
+  </div>
 
-<label for="shipping">交付管理費（元）：</label>
-<select id="shipping">
-  <option value="0">免收</option>
-  <option value="200">NT$200</option>
-  <option value="500">NT$500（含部署 + 技術驗收）</option>
-</select>
+  <label for="discount">折扣選擇：</label>
+  <select id="discount">
+    <option value="1">無折扣（100%）</option>
+    <option value="0.9">9 折（90%）</option>
+    <option value="0.85">85 折（85%）</option>
+    <option value="0.8">8 折（80%）</option>
+  </select>
 
-<div class="result" id="result">
-  <p>原價：NT$ <span id="originalPrice">15000</span></p>
-  <p>折扣後：NT$ <span id="discountedPrice">15000</span></p>
-  <p>節省金額：NT$ <span id="savedAmount">0</span></p>
-  <p>運費：NT$ <span id="shippingCost">0</span></p>
-  <hr />
-  <p class="highlight">總計：NT$ <span id="finalTotal">15000</span></p>
+  <label for="shipping">交付管理費（元）：</label>
+  <select id="shipping">
+    <option value="0">免收</option>
+    <option value="200">NT$200</option>
+    <option value="500">NT$500（含部署 + 技術驗收）</option>
+  </select>
+
+  <div class="result" id="result">
+    <p>原價：NT$ <span id="originalPrice">15000</span></p>
+    <p>折扣後：NT$ <span id="discountedPrice">15000</span></p>
+    <p>節省金額：NT$ <span id="savedAmount">0</span></p>
+    <p>運費：NT$ <span id="shippingCost">0</span></p>
+    <hr />
+    <p class="highlight">總計：NT$ <span id="finalTotal">15000</span></p>
+  </div>
 </div>
 
 <script>
+  // 黑客帝國字串雨動畫設定
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  // 字串組合（片假名 + 英文大寫 + 數字）
+  const katakana = 'アァカサタナハマヤャラワガザダバパビピフブプヘベペホボモヨョロヲンヰヱヴ';
+  const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const nums = '0123456789';
+  const alphabet = katakana + latin + nums;
+
+  const fontSize = 16;
+  let columns = Math.floor(width / fontSize);
+  let rainDrops = Array(columns).fill(1);
+
+  const colors = ['#0F0', '#0FF', '#F00', '#FF0'];  // 綠、藍、紅、黃
+  let currentColorIndex = 0;
+
+  // 音效：簡單機器音（需首次互動啟動AudioContext）
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function playBeep() {
+    if (audioCtx.state !== 'running') return;
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.frequency.value = 100 + Math.random() * 300;
+    gainNode.gain.value = 0.01;
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.05);
+  }
+
+  function draw() {
+    // 半透明黑色覆蓋實現軌跡殘影效果
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < rainDrops.length; i++) {
+      const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+      const x = i * fontSize;
+      const y = rainDrops[i] * fontSize;
+
+      ctx.fillStyle = Math.random() > 0.975 ? '#FFF' : colors[currentColorIndex];
+      ctx.fillText(text, x, y);
+
+      if (y > height && Math.random() > 0.975) {
+        rainDrops[i] = 0;
+      }
+      rainDrops[i]++;
+    }
+
+    playBeep();
+  }
+
+  let animationInterval = setInterval(draw, 50);
+
+  // 點擊切換字串雨顏色 & 啟用音訊
+  canvas.addEventListener('click', () => {
+    currentColorIndex = (currentColorIndex + 1) % colors.length;
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  });
+
+  // 窗口調整時同步更新畫布尺寸和陣列長度
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    columns = Math.floor(width / fontSize);
+    rainDrops = Array(columns).fill(1);
+  });
+
+  // 費用試算邏輯
   const planSelect = document.getElementById('plan');
   const discountSelect = document.getElementById('discount');
   const shippingSelect = document.getElementById('shipping');
@@ -178,8 +320,7 @@ nav a:hover {
   shippingSelect.addEventListener('change', update);
 
   update(); // 初始化
-</script>
 
+</script>
 </body>
 </html>
-
