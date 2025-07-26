@@ -5,25 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>網站開發方案試算</title>
 <style>
-  /* 重置 */
-  * {
-    box-sizing: border-box;
-  }
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    overflow: hidden;
+  /* 全螢幕字串雨背景 */
+  body, html {
+    margin: 0; padding: 0; 
+    height: 100%;
+    background-color: black;
+    overflow-x: hidden;
     font-family: 'Segoe UI', sans-serif;
-    background-color: black; /* fallback */
+    color: #e0f2fe;
   }
-
-  /* Canvas背景 */
   canvas#matrixCanvas {
     position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
     z-index: 0;
     display: block;
-    background-color: black;
+    pointer-events: none; /* 不阻擋點擊 */
   }
 
   /* 內容區 */
@@ -33,15 +31,30 @@
     max-width: 600px;
     margin: 40px auto;
     padding: 30px;
-    background: rgba(17, 24, 39, 0.85);
-    color: #e0f2fe;
     border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+    background: rgba(17, 24, 39, 0.9);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+  }
+
+  header nav {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  nav a {
+    color: #7dd3fc;
+    font-size: 18px;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+  }
+  nav a:hover {
+    color: #38bdf8;
   }
 
   h2 {
     text-align: center;
     color: #7dd3fc;
+    margin-top: 0;
   }
 
   label {
@@ -88,53 +101,26 @@
     font-weight: bold;
   }
 
-  nav {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  nav a {
-    color: #7dd3fc;
-    font-size: 18px;
-    text-decoration: none;
-    margin: 0 10px;
-    transition: color 0.3s;
-  }
-  nav a:hover {
-    color: #38bdf8;
-  }
-
-  /* 手機版響應式 */
+  /* 響應式 */
   @media (max-width: 480px) {
     .content {
-      margin: 20px 10px;
-      padding: 20px;
       max-width: 95vw;
+      margin: 20px auto;
+      padding: 15px;
+      font-size: 14px;
+    }
+    nav a {
+      font-size: 16px;
+      margin: 0 6px;
     }
     h2 {
       font-size: 1.5rem;
-      line-height: 1.3;
     }
-    label {
-      font-size: 1rem;
-      line-height: 1.4;
-    }
-    select {
+    label, select, .result p {
       font-size: 14px;
-      padding: 12px 10px;
     }
-    nav {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    nav a {
-      margin: 0;
-      padding: 8px 0;
-      border-radius: 6px;
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-    nav a:hover {
-      background-color: rgba(56, 189, 248, 0.2);
+    .highlight {
+      font-size: 18px;
     }
   }
 </style>
@@ -192,27 +178,37 @@
 </div>
 
 <script>
-  // 黑客帝國字串雨動畫設定
+  // 字串雨動畫設定
   const canvas = document.getElementById('matrixCanvas');
   const ctx = canvas.getContext('2d');
 
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-
-  // 字串組合（片假名 + 英文大寫 + 數字）
   const katakana = 'アァカサタナハマヤャラワガザダバパビピフブプヘベペホボモヨョロヲンヰヱヴ';
   const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const nums = '0123456789';
   const alphabet = katakana + latin + nums;
 
   const fontSize = 16;
-  let columns = Math.floor(width / fontSize);
-  let rainDrops = Array(columns).fill(1);
+  let width, height, columns, rainDrops;
+
+  // 設置畫布大小與欄數
+  function setupCanvas() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    columns = Math.floor(width / fontSize);
+    rainDrops = Array(columns).fill(1);
+  }
+
+  setupCanvas();
+
+  // 畫面重新調整時更新
+  window.addEventListener('resize', () => {
+    setupCanvas();
+  });
 
   const colors = ['#0F0', '#0FF', '#F00', '#FF0'];  // 綠、藍、紅、黃
   let currentColorIndex = 0;
 
-  // 音效：簡單機器音（需首次互動啟動AudioContext）
+  // 音效（點擊時啟用）
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
   function playBeep() {
@@ -227,11 +223,10 @@
     osc.stop(audioCtx.currentTime + 0.05);
   }
 
+  // 繪製字串雨
   function draw() {
-    // 半透明黑色覆蓋實現軌跡殘影效果
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, width, height);
-
     ctx.font = fontSize + 'px monospace';
 
     for (let i = 0; i < rainDrops.length; i++) {
@@ -247,7 +242,6 @@
       }
       rainDrops[i]++;
     }
-
     playBeep();
   }
 
@@ -261,15 +255,7 @@
     }
   });
 
-  // 窗口調整時同步更新畫布尺寸和陣列長度
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    columns = Math.floor(width / fontSize);
-    rainDrops = Array(columns).fill(1);
-  });
-
-  // 費用試算邏輯
+  // --- 費用試算邏輯 ---
   const planSelect = document.getElementById('plan');
   const discountSelect = document.getElementById('discount');
   const shippingSelect = document.getElementById('shipping');
@@ -309,18 +295,18 @@
 
     planDescription.textContent = plan.desc;
     originalPrice.textContent = price.toLocaleString();
-    discountedPrice.textContent = discounted.toLocaleString(undefined, {maximumFractionDigits: 0});
-    savedAmount.textContent = saved.toLocaleString(undefined, {maximumFractionDigits: 0});
+    discountedPrice.textContent = discounted.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    savedAmount.textContent = saved.toLocaleString(undefined, { maximumFractionDigits: 0 });
     shippingCost.textContent = shippingFee.toLocaleString();
-    finalTotal.textContent = total.toLocaleString(undefined, {maximumFractionDigits: 0});
+    finalTotal.textContent = total.toLocaleString(undefined, { maximumFractionDigits: 0 });
   }
 
   planSelect.addEventListener('change', update);
   discountSelect.addEventListener('change', update);
   shippingSelect.addEventListener('change', update);
 
-  update(); // 初始化
-
+  update(); // 頁面載入初始化
 </script>
+
 </body>
 </html>
